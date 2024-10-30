@@ -35,6 +35,15 @@ There's minimal setup. After opening the project, simply import the ```.unitypac
 ## PrimeTween
 Pick it up from [here](https://assetstore.unity.com/packages/tools/animation/primetween-high-performance-animations-and-sequences-252960), and import it from the package manager (Window > Package Manager > My Assets > Search PrimeTween).
 
+# Implementation Details
+
+## Part 1: Base:
+Below are the implementations:
+- Dynamic game objects: Dashing player
+- Playable MC: Seria (MC)
+- Game objects suitable for scene: Floor, distorted wall, nightstand, frame (this is a classical/baroque style)
+- Win/lose condition: fires on death/kill
+
 ## Main Shader (Ruidger)   
 
 This shader is split into 4 main componenets to get the effect. The two main ideas behind this shader is, I want a toonshader that is animated in a sense and is module to create more subshaders in the future. The shader itself has a lot of properties that can be adjusted in the future base on what mesh I'm applying it too. 
@@ -71,13 +80,5 @@ Finally, I add them together cause I want to keep their seperate effects and mul
 
 Overall, this base shader has all the base effects of what we want for the game. Now it's all about fine tuning and tinkering the shader on an object-by-object bases to find the best effect for the object in question. 
 
-
-
-
-
-
-
-
-
-
-
+## Part 2: Illumination (Adam):
+I implemented the toggling of the states using a float in the shader.
