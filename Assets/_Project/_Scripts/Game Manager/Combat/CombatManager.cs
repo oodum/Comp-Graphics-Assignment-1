@@ -131,7 +131,10 @@ namespace Combat {
 			}
 		}
 
-		void Update() { playerDashHandler.Tick(); }
+		void Update() {
+			if (playerDashHandler != null)
+				playerDashHandler.Tick();
+		}
 
 		public enum CombatState {
 			Good,

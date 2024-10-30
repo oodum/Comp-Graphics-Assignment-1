@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Project/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/_PROTOTYPE/Incantation.unity
     guid: 73b323725f36aaa41a0651850c371250
+  - enabled: 1
+    path: Assets/_Project/PROTO SCENE/Proto.unity
+    guid: 1a88d9cd44acd177fab752be795892f1
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 4f5ae422f14105d4f82579c91d582676, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

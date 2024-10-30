@@ -10,6 +10,7 @@ Shader "Custom/Hologram" {
             "RenderType"="Transparent"
             "Queue"="Transparent"
         }
+        // needed for transparency
         Blend SrcAlpha OneMinusSrcAlpha
         Pass {
         HLSLPROGRAM
@@ -35,7 +36,7 @@ Shader "Custom/Hologram" {
 
         TEXTURE2D(_MainTex);
         SAMPLER(sampler_MainTex);
-        float4 _MainTex_ST;
+        float4 _MainTex_ST; // texture scale and offset
         float4 _Color;
         float  _Fresnel;
         float _Transparency;
@@ -46,7 +47,7 @@ Shader "Custom/Hologram" {
             v2f OUT;
             OUT.position = TransformObjectToHClip(IN.position.xyz);
             OUT.normal = normalize(TransformObjectToWorldNormal(IN.normal));
-            OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
+            OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex); // texture scale and offset
             // calculate view direction
             float3 worldPosition = TransformObjectToWorld(IN.position.xyz);
             OUT.viewDirection = normalize(GetCameraPositionWS() - worldPosition);
@@ -55,12 +56,17 @@ Shader "Custom/Hologram" {
 
         float4 frag(v2f IN) : SV_Target
         {
+            // https://docs.unity3d.com/Packages/com.unity.shadergraph@6.9/manual/Fresnel-Effect-Node.html
             float fresnel = 1 - dot(normalize(IN.viewDirection), normalize(IN.normal));
             fresnel = pow(fresnel, _Fresnel);
-            float3 fresnelColor = _Color.rgb * fresnel; 
+            // apply colour to fresnel
+            float3 fresnelColor = _Color.rgb * fresnel;
+            // Set the fresnel's alpha to the transparency value (override the alpha value of the color)
             float4 fresnelResult = float4(fresnelColor, fresnel);
-            float4 albedo = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
-            return float4(albedo.rgb + fresnelResult.rgb, min(fresnelResult.a, _Transparency));
+            // sample the texture
+            float4 texColor = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, IN.uv);
+            // i used min so the user can control the transparency
+            return float4(texColor.rgb + fresnelResult.rgb, min(fresnelResult.a, _Transparency));
         }
         ENDHLSL
         }

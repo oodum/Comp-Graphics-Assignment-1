@@ -1,5 +1,6 @@
 using System;
 using Combat;
+using EventBus;
 using IncantationSystem.Castables;
 using UnityEngine;
 namespace GameEntity {
@@ -22,5 +23,13 @@ namespace GameEntity {
 		protected override void Deregister() {
 			combatManager.DeregisterEntity(this);
 		}
+
+		public override void Kill() {
+			Deregister();
+			EventBus<LoseEvent>.Raise(new());
+			Destroy(gameObject);
+		}
 	}
+	
+	public struct LoseEvent : IEvent { }
 }

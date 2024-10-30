@@ -8,6 +8,7 @@ using UnityEngine;
 namespace GameEntity {
 	public class BasicCPUEntity : Entity {
 		static readonly int FRESNEL = Shader.PropertyToID("_Fresnel");
+		static readonly int TRANSPARENCY = Shader.PropertyToID("_Transparency");
 		CombatManager combatManager;
 		[SerializeField] Material hologramShader;
 
@@ -30,12 +31,9 @@ namespace GameEntity {
 			foreach (Transform child in transform) {
 				ApplyMaterialToDescendants(child);
 				if (child.TryGetComponent(out Renderer foundRenderer)) {
-					/*
-					for (int i = 0; i < foundRenderer.materials.Length; i++) {
-						print('d');
+					/*  for (int i = 0; i < foundRenderer.materials.Length; i++) { // this didn't work
 						foundRenderer.materials[i] = hologramShader;
-					}
-					*/
+					} */
 					foundRenderer.material = hologramShader;
 				}
 			}
@@ -43,6 +41,7 @@ namespace GameEntity {
 
 		async Task KillSequence() {
 			await AnimateHologram();
+			EventBus<WinEvent>.Raise(new());
 			Destroy(gameObject);
 		}
 
@@ -56,6 +55,10 @@ namespace GameEntity {
 				elapsedTime += Time.deltaTime;
 				float currentValue = Mathf.Lerp(startValue, targetValue, elapsedTime / duration);
 				hologramShader.SetFloat(FRESNEL, currentValue);
+				if (elapsedTime/ duration > 0.8f) {
+					float transparency = Mathf.Lerp(1, 0, Mathf.InverseLerp(0.8f * duration, duration, elapsedTime));
+					hologramShader.SetFloat(TRANSPARENCY, transparency);
+				}
 				await Task.Yield(); // Wait for the next frame
 			}
 

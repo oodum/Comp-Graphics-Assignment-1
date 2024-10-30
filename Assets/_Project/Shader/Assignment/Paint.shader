@@ -17,10 +17,8 @@ Shader "Custom/Paint" {
     }
     SubShader {
         Tags {
-            "RenderType"="Transparent"
-            //"Queue"="Transparent"
+            "RenderType"="Opaque"
         }
-        Blend SrcAlpha OneMinusSrcAlpha
         Pass {
             HLSLPROGRAM
             #pragma vertex vert
@@ -42,12 +40,12 @@ Shader "Custom/Paint" {
                 float2 uv : TEXCOORD0;
                 float3 normal : TEXCOORD1;
                 float3 viewDirection : TEXCOORD2;
-                float2 paintuv : TEXCOORD3;
+                float2 paintuv : TEXCOORD3; // separate uv for paint brush texture
             };
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
-            float4 _MainTex_ST;
+            float4 _MainTex_ST; // texture scale and offset
 
             TEXTURE2D(_PaintBrushTex);
             SAMPLER(sampler_PaintBrushTex);
@@ -70,7 +68,7 @@ Shader "Custom/Paint" {
                 v2f OUT;
                 OUT.position = TransformObjectToHClip(IN.position.xyz);
                 OUT.normal = normalize(TransformObjectToWorldNormal(IN.normal));
-                OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex);
+                OUT.uv = TRANSFORM_TEX(IN.uv, _MainTex); // use transform tex to apply scale and offset
                 OUT.paintuv = TRANSFORM_TEX(IN.paintuv, _PaintBrushTex);
                 // calculate view direction
                 float3 worldPosition = TransformObjectToWorld(IN.position.xyz);
@@ -109,19 +107,20 @@ Shader "Custom/Paint" {
                 IN.paintuv += _Time.y - 0.5;
                 float3 paintColor = SAMPLE_TEXTURE2D(_PaintBrushTex, sampler_PaintBrushTex, IN.paintuv).rgb;
                 float3 paintToonRing = paintColor * toonRing;
+                // use the r and g values of the toon ring to sample the toon ramp texture
                 float3 rampedPaintToonRing = SAMPLE_TEXTURE2D(_ToonRamp, sampler_ToonRamp, paintToonRing.rg).rgb;
-                
+                // finalised toon colour
                 float3 rampedPaintToonRingTex = rampedPaintToonRing * (texColor.rgb + step(rampedPaintToonRing, 0));
 
                 // Rim
-                float fresnel = pow(1 - saturate(dot(normal * _Offset, viewDirection)), 0.01); //https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Fresnel-Effect-Node.html
+                float fresnel = pow(1 - saturate(dot(normal * _Offset, viewDirection)), 0.01);
+                //https://docs.unity3d.com/Packages/com.unity.shadergraph@17.0/manual/Fresnel-Effect-Node.html
                 float3 rim = fresnel * paintColor * NdotL;
 
                 float3 toon = rim + rampedPaintToonRingTex;
-                // 
 
                 float3 final;
-
+                // display the different lighting models based on the index
                 if(_Index < 1)
                 {
                     final = diffuse;
@@ -138,7 +137,7 @@ Shader "Custom/Paint" {
                 {
                     final = diffuse + ambient + specular;
                 }
-                else if (_Index < 5)
+                else if(_Index < 5)
                 {
                     final = toon;
                 }

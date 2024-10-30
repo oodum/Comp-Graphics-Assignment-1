@@ -25,6 +25,8 @@ namespace MusicEngine {
 		
 		public float ConvertProgressToTime(float progress) {
 			return progress * 60 / BPM;
-		} 
+		}
+
+		public void StopMusic() => musicPlayer.StopMusic();
 	}
 }
