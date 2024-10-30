@@ -91,9 +91,33 @@ This was done by using a switch statement inside the shader to determine which s
 5: toon + diffuse + ambient + specular
 But how was I able to integrate the shadergraph version that Ruidger made into the hlsl version?
 I had to recreate it. Details are inside `Assets/_Project/Shader/Assignment/Paint.shader`
+## Part 3: Color Grading
+Color grading was done using LUTs and Unity's Post Processing tools, as I could not get the HLSL version to work.
+All I had to do was import the LUTs and apply them on keypress.
+![rider64_LASiBNwmHg.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_LASiBNwmHg.png)
+A video example is in the video report
 ## Part 4: Shaders and Effects (Adam + Ruidger):
 Since we have two people in our group, we did three shader implementations:
 ### Main Shader:
 Ruidger made the shadergraph version that you already saw, and I turned it into HLSL.
+
+More information is inside the video report
 This uses rim lighting and diffuse
-### Paint Shader:
+![rider64_r0xENyWHWF.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_r0xENyWHWF.png)
+The rim was simply done by using the fresnel effect and multiplying it with the color of the rim.
+I also used NdotL to determine the direction of the light and the normal of the object.
+### Hologram
+This shader uses transparency and hologram effects.
+To start, the shader needs the correct tags and modes to enable transparency
+![rider64_YPHfWiKb9b.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_YPHfWiKb9b.png)
+After, I used fresnel to create the hologram effect, using the fresnel's output to also determine alpha
+This is multiplied by the color of the hologram and texture colour:
+![rider64_SqE0YoyAXs.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_SqE0YoyAXs.png)
+### Floor 
+The floor shader uses normal mapping as well as shadow mapping
+![rider64_a3cF4U6uGo.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_a3cF4U6uGo.png)
+In order to use shadows, I had to import the multi_compile pragma calls.
+![rider64_mVfjA05Pj5.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_mVfjA05Pj5.png)
+I then had to use the tangent, bitangent, and shadowcoords for the normal and shadows, respectively.
+![rider64_vqvuWmvG32.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_vqvuWmvG32.png)
+![rider64_6uxjt9zSao.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_6uxjt9zSao.png)
