@@ -121,3 +121,5 @@ In order to use shadows, I had to import the multi_compile pragma calls.
 I then had to use the tangent, bitangent, and shadowcoords for the normal and shadows, respectively.
 ![rider64_vqvuWmvG32.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_vqvuWmvG32.png)
 ![rider64_6uxjt9zSao.png](Assets%2F_Project%2FArt%2FReadme%20files%2Frider64_6uxjt9zSao.png)
+# Split
+50/50 split between Ruidger and Adam
