@@ -34,3 +34,7 @@ There's minimal setup. After opening the project, simply import the ```.unitypac
 
 ## PrimeTween
 Pick it up from [here](https://assetstore.unity.com/packages/tools/animation/primetween-high-performance-animations-and-sequences-252960), and import it from the package manager (Window > Package Manager > My Assets > Search PrimeTween).
+
+## Main Shader (Ruidger)   
+
+This shader is split into 4 main componenets to get the effect 
