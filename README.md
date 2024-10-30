@@ -38,3 +38,13 @@ Pick it up from [here](https://assetstore.unity.com/packages/tools/animation/pri
 ## Main Shader (Ruidger)   
 
 This shader is split into 4 main componenets to get the effect 
+![image](https://github.com/user-attachments/assets/e5f044eb-791f-4c10-ab28-d354b1da19a4)
+The first part is for the shader to identify the main texture of the object. In this case due to it being a template shader, I have a general node. 
+![image](https://github.com/user-attachments/assets/ea4ed34f-1ec6-42ea-bb2d-9c37b71752a9)
+This part of the shader is calculating the toon shading to create the different lights on the object. I calculated the dot product between the MainLight and the normal of the object. 
+![image](https://github.com/user-attachments/assets/d6b4e9f7-9f10-4df8-ba16-b9d74d1ad32d)
+The MainLight function take the built in light and finds the direction that the light is shining in and takes that output to perform dot product with the normals of the mesh. 
+
+
+
+
