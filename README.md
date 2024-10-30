@@ -81,4 +81,19 @@ Finally, I add them together cause I want to keep their seperate effects and mul
 Overall, this base shader has all the base effects of what we want for the game. Now it's all about fine tuning and tinkering the shader on an object-by-object bases to find the best effect for the object in question. 
 
 ## Part 2: Illumination (Adam):
-I implemented the toggling of the states using a float in the shader.
+I implemented the toggling of the states using a float in the shader.![Toggles.gif](Toggles.gif)
+This was done by using a switch statement inside the shader to determine which state the object is in. The states are as follows:
+0: diffuse
+1: diffuse + ambient
+2: diffuse + specular
+3: diffuse + ambient + specular
+4: toon
+5: toon + diffuse + ambient + specular
+But how was I able to integrate the shadergraph version that Ruidger made into the hlsl version?
+I had to recreate it. Details are inside `Assets/_Project/Shader/Assignment/Paint.shader`
+## Part 4: Shaders and Effects (Adam + Ruidger):
+Since we have two people in our group, we did three shader implementations:
+### Main Shader:
+Ruidger made the shadergraph version that you already saw, and I turned it into HLSL.
+This uses rim lighting and diffuse
+### Paint Shader:
